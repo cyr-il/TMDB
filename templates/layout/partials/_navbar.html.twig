@@ -1,0 +1,28 @@
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">Faites Votre Choix</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link {% if app.request.attributes.get('_route') =='home' %}active{% endif %}" href="{{path('home')}}">Les nouveautés</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if app.request.attributes.get('_route') =='movies' %}active{% endif %}" href="{{path('movies')}}">Films</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if app.request.attributes.get('_route') =='series' %}active{% endif %}" href="{{path('series')}}">Séries</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if app.request.attributes.get('_route') =='actor' %}active{% endif %}" href="{{path('actor')}}">Acteurs</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if app.request.attributes.get('_route') =='category' %}active{% endif %}" href="{{path('category')}}" style="color:red">Catégories</a>
+                </li>
+                <li><span class="badge badge-alert">New</span></li>
+            </ul>
+        </div>
+    </div>
+</nav>

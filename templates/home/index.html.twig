@@ -1,0 +1,26 @@
+{% extends 'layout/base.html.twig' %}
+
+{% block title %}Bienvenue sur votre site de films !{% endblock %}
+
+{% block body %}
+
+<div class="jumbotron jumbotron-fluid bg-light">
+    <div class="container">
+        <h1 class=" mt-5 mb-5 display-2">Voici les dernières nouveautés</h1>
+        <p class="lead"><i>Retrouvez ci-dessous, quelques unes des dernières nouveautés sorties au cinéma</i></p>
+        <hr class="my-4">
+    </div>
+</div>
+<div class="row row-cols-3 row-cols-md-3 mx-auto mt-3">
+{% for latest in latests %}
+        <div class="card border-0" style="width: 22rem;">
+            <img src="https://image.tmdb.org/t/p/w500{{latest.poster_path}}" class="card-img-top" alt="{{latest.original_title}}">
+            <div class="card-body">
+                <a href="{{path('movie_detail', {'id': latest.id})}}"><h5 class="card-title"><b>{{latest.original_title}}</b></h5></a>
+                <p class="card-text">{{latest.overview|slice(0,100)}}</p>
+                <p class="card-text"><small class="text-muted">{{latest.release_date}}</small></p>
+            </div>
+        </div>
+{% endfor %}
+</div>
+{% endblock %}

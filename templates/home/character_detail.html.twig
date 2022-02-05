@@ -1,0 +1,90 @@
+{% extends 'layout/base.html.twig' %}
+
+{% block title %}Bienvenue sur votre site de films !{% endblock %}
+
+{% block body %}
+
+<div class="card mt-3 border-0 ml-5">
+    <div class="row ml-5">
+        <div class="col-md-2 ml-5">
+            <img class="" src="https://image.tmdb.org/t/p/w400{{character.profile_path}}" alt="{{character.name}}">
+        </div>
+        <div class="col-md-3">
+            <div class="card-body">
+                {% if character.deathday is not null %}
+                {% if character.gender == 2 %} 
+                    <h4 class="card-title">{{character.name}} à joué dans {{character.nbOfMovies}} films</h4><span style="color:green"><i>Décédé à l'âge de {{character.age}} ans</i></span>
+                {% else %}
+                    <h4 class="card-title">{{character.name}} à joué dans {{character.nbOfMovies}} films</h4><span style="color:green"><i>Décédée à l'âge de {{character.age}} ans</i></span>
+                    {% endif %}
+                {% elseif character.age == null %}
+                    <h4 class="card-title">{{character.name}} à joué dans {{character.nbOfMovies}} films</h4><span style="color:green"><i>Impossible de connaitre l'âge</i></span>
+                {% else %}
+                    <h4 class="card-title">{{character.name}} à joué dans {{character.nbOfMovies}} films</h4><span style="color:green"><i>{{character.age}} ans</i></span> 
+                {% endif %}
+                {% if character.gender >= 2 %}
+                    {% if character.birthday is null %}
+                        <p class="card-text"><small class="text-muted">Né à une date inconnue à {{character.place_of_birth}}</small></p>
+                    {% else %}
+                        <p class="card-text"><small class="text-muted">Né le {{character.birthday|date('d-m-Y')}} à {{character.place_of_birth}}</small></p>
+                    {% endif %}
+                {% elseif character.gender == 0 %}
+                    {% if character.birthday is null %}
+                        <p class="card-text"><small class="text-muted">Né(e) à une date inconnue à {{character.place_of_birth}}</small></p>
+                    {% else %}
+                        <p class="card-text"><small class="text-muted">Né(e) le {{character.birthday|date('d-m-Y')}} à {{character.place_of_birth}}</small></p>
+                    {% endif %}
+                {% else %}
+                    {% if character.birthday is null %}
+                        <p class="card-text"><small class="text-muted">Née à une date inconnue à {{character.place_of_birth}}</small></p>
+                    {% else %}
+                        <p class="card-text"><small class="text-muted">Née le {{character.birthday|date('d-m-Y')}} à {{character.place_of_birth}}</small></p>
+                    {% endif %}
+                {% endif %}
+                {% if character.deathday is not null and character.gender == 2 %}
+                    {% if character.deathday is null %}
+                        <p class="card-text"><small class="text-muted">Décédé à une date inconnue</small></p>
+                    {% else %}
+                        <p class="card-text"><small class="text-muted">Décédé le {{character.deathday|date('d-m-Y')}}</small></p>
+                    {% endif %}
+                {% elseif character.deathday is not null and character.gender == 1 %}
+                    {% if character.deathday is null %}
+                        <p class="card-text"><small class="text-muted">Décédée à une date inconnue</small></p>
+                    {% else %}
+                    <p class="card-text"><small class="text-muted">Décédée le {{character.deathday|date('d-m-Y')}}</small></p>
+                    {% endif %}
+                {% endif %}
+                
+                <p class="card-text mt-4">{{character.biography}}</p>
+            </div>
+        </div>
+        {# <div class="col-md-3">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                {% for value in releaseDate %}
+                <rect x="{{ loop.index }}" y="0" width="20" height="{{ value }}" />
+                {% endfor %}
+            </svg>
+        </div> #}
+    </div>
+</div>
+
+
+<a href="javascript:history.back()"><button type="button" class="btn btn-info mb-3 mt-3">Retour à la liste des acteurs</button></a>
+<div class="row row-cols-3 row-cols-md-3 mx-auto">
+{% for characterMovie in characterMovies %}
+    <div class="card border-0 mt-3" style="width: 22rem;">
+    {% if characterMovie.poster_path %}
+        <img src="https://image.tmdb.org/t/p/w500{{characterMovie.poster_path}}" class="card-img-top" alt="{{characterMovie.original_title}}">
+    {% else %}
+        <img src="https://via.placeholder.com/500x750" class="card-img-top" alt="...">
+    {% endif %}
+        <div class="card-body">
+            <a href="{{path('movie_detail', {'id': characterMovie.id})}}"><h5 class="card-title">{{characterMovie.original_title}}</h5></a>
+            <h5 class="card-title"><b>({{characterMovie.character}})</b></h5>
+            <p class="card-text">{{characterMovie.overview|slice(0,20)}}</p>
+            {# <p class="card-text"><small class="text-muted">{{characterMovie.release_date|date('d-m-Y')}}</small></p> #}
+        </div>
+    </div>
+{% endfor %}
+</div>
+{% endblock %}

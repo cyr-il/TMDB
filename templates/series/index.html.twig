@@ -1,0 +1,45 @@
+{% extends 'layout/base.html.twig' %}
+
+{% block title %}Bienvenue sur votre site de films et de séries !{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <form>
+        <div class="mb-4 mt-5">
+            <label for="serie" class="form-label">Choisissez votre série</label>
+            <input type="text" class="form-control" id="serie" name="serie">
+            <div class="form-text mt-3"><i>Choisissez une série et retrouvez un maximum de détails sur elle</i></div>
+        </div>
+        <button type="submit" class="btn btn-primary mb-3">Valider ma série</button>
+    </form>
+</div>
+{% if app.request.query.get('serie')%}
+<div class="container">
+    <div class="row row-cols-1 row-cols-md-2 g-3 mx-auto">
+        {% for serie in series %}
+            <div class="card mx-auto" style="width: 18rem;">
+                {% if serie.poster_path %}
+                <img src="https://image.tmdb.org/t/p/w500{{serie.poster_path}}" class="card-img-top" alt="{{serie.name}}">
+                {% else %}
+                <img src="https://via.placeholder.com/500x750" class="card-img-top" alt="{{serie.name}}">
+                {% endif %}
+                <div class="card-body">
+                    <a href="{{path('serie_detail', {'id': serie.id})}}"><h5 class="card-title"><b>{{serie.name}}</b></h5></a>
+                    <p class="card-text">{{serie.overview|slice(0,100)}}</p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    {% if serie.first_air_date %}
+                        <li class="list-group-item">{{serie.first_air_date|date('d-m-Y')}}</li>
+                    {% endif %}
+                    <div class="progress">
+                        <div class="progress-bar bg-success" role="progressbar" style="width:{{serie.vote_average*10}}%;" aria-valuenow="{{serie.vote_average}}" aria-valuemin="0" aria-valuemax="10">{{serie.vote_average}}</div>
+                    </div>
+                    <li class="list-group-item">{{serie.popularity}}</li>
+                </ul>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+{% endblock %}

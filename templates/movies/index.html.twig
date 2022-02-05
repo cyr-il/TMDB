@@ -1,0 +1,43 @@
+{% extends 'layout/base.html.twig' %}
+
+{% block title %}Bienvenue sur votre site de films !{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <form>
+        <div class="mb-4 mt-5">
+            <label for="film" class="form-label">Choisissez votre film</label>
+            <input type="text" class="form-control" id="film" name="film">
+            <div class="form-text mt-3"><i>Choisissez un film et retrouvez un maximum de détails sur lui</i></div>
+        </div>
+        <button type="submit" class="btn btn-primary mb-3">Valider mon film</button>
+    </form>
+</div>
+{% if app.request.query.get('film')%}
+<div class="row row-cols-3 row-cols-md-3 mx-auto mt-3">
+    {% for film in movie %}
+        <div class="card border-0" style="width: 22rem;">
+            {% if film.poster_path %}
+            <img src="https://image.tmdb.org/t/p/w500{{film.poster_path}}" class="card-img-top" alt="{{film.title}}">
+            {% else %}
+            <img src="https://via.placeholder.com/500x750" class="card-img-top" alt="...">
+            {% endif %}
+            <div class="card-body">
+                <a href="{{path('movie_detail', {'id': film.id})}}"><h5 class="card-title"><b>{{film.title}}</b></h5></a
+                <p class="card-text">{{film.overview|slice(0,100)}}</p>
+            </div>
+            <ul class="list-group list-group-flush">
+                {% if film.release_date %}
+                    <li class="list-group-item">{{film.release_date|date('d-m-Y')}}</li>
+                {% endif %}
+                <div class="progress">
+                    <div class="progress-bar bg-success" role="progressbar" style="width:{{film.vote_average*10}}%;" aria-valuenow="{{film.vote_average}}" aria-valuemin="0" aria-valuemax="10">{{film.vote_average}}</div>
+                </div>
+                <li class="list-group-item">{{film.popularity}}</li>
+            </ul>
+        </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endblock %}

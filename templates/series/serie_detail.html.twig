@@ -1,0 +1,55 @@
+{% extends 'layout/base.html.twig' %}
+
+{% block title %}Bienvenue sur votre site de films et séries!{% endblock %}
+
+{% block body %}
+
+<div class="container mx-auto">
+<h1 class ="mb-3 mt-3 mx-auto">Bienvenue sur votre site de films et séries!</h1>
+<div class="card mb-3 mt-3" style="max-width: 540px;">
+  <div class="row g-0">
+    <div class="col-md-4">
+    {% if showDetail.poster_path %}
+      <img src="https://image.tmdb.org/t/p/w500/{{showDetail.poster_path}}" class="img-fluid rounded-start" alt="{{showDetail.original_name}}">
+    {% else %}
+        <img src="https://via.placeholder.com/500x750" class="card-img-top" alt="{{showDetail.original_name}}">
+    {% endif %}
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title">{{showDetail.original_name}}</h5>
+        <p class="card-text">{{showDetail.overview}}</p>
+        {% for genre in showDetail.genres %}
+          <li class="card-text">{{genre.name}}</li>
+        {% endfor %}
+        <p class="card-text"><i><small style="color:blue">Premier épisode: {{showDetail.first_air_date|date('d-m-Y')}}</small></i></p>
+        <p class="card-text"><i><small style="color:blue">Dernier épisode: {{showDetail.last_air_date|date('d-m-Y')}}</small></i></p>
+        <p class="card-text"><i><small style="color:blue">Nombre de saisons: {{showDetail.number_of_seasons}}</small></i></p>
+        <p class="card-text"><i><small style="color:blue">Nombre d'épisodes: {{showDetail.number_of_episodes}}</small></i></p>
+      </div>
+    </div>
+  </div>
+</div>
+<a href="javascript:history.back()"><button type="button" class="btn btn-info mb-3">Retour à la liste des séries</button></a>
+
+<div class="container">
+    {% if videos|length > 0 %}
+    <iframe width="800" height="400" src="https://www.youtube.com/embed/{{videos[0].key}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    {% endif %}
+</div>
+<div class="card-group mt-5">
+    <div class="row row-cols-1 row-cols-md-2 g-3 mx-auto">
+        {% for actor in characters %}
+            {% if actor.profile_path %}
+            <div class="card mx-auto" style="width: 18rem;">
+                <img src="https://image.tmdb.org/t/p/w500/{{actor.profile_path}}" class="card-img-top" alt="{{actor.name}}">
+                <div class="card-body">
+                    <a href="{{path("character_detail", {'id': actor.id})}}"><p><b>{{actor.name}}</b></p></a>
+                    <p class="card-text" style="color:green">{{actor.character}}</p>
+                </div>
+            </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

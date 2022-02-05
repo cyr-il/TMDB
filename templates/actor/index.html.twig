@@ -1,0 +1,42 @@
+{% extends 'layout/base.html.twig' %}
+
+{% block title %}Bienvenue sur votre site de films !{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <form>
+        <div class="mb-4 mt-5">
+            <label for="actor" class="form-label">Choisissez votre acteur / actrice</label>
+            <input type="text" class="form-control" id="actor" name="actor">
+            <div class="form-text mt-3"><i>Choisissez un(e) acteur/actrice et retrouvez un maximum de détails sur lui/elle</i></div>
+        </div>
+        <button type="submit" class="btn btn-primary mb-3">Valider ma recherche</button>
+    </form>
+</div>
+{% if app.request.query.get('actor')%}
+    <div class="row row-cols-3 row-cols-md-3 mx-auto mt-3 ml-3">
+        {% for actor in actors %}
+            <div class="card border-0" style="width: 22rem;">
+                {% if actor.profile_path %}
+                <img src="https://image.tmdb.org/t/p/w500{{actor.profile_path}}" class="card-img-top" alt="{{actor.name}}">
+                {% else %}
+                <img src="https://via.placeholder.com/500x750" class="card-img-top" alt="...">
+                {% endif %}
+                <div class="card-body">
+                    <a href="{{path('character_detail', {'id': actor.id})}}"><h5 class="card-title"><b>{{actor.name}}</b></h5></a>
+                </div>
+                {# <ul class="list-group list-group-flush">
+                    {% if film.release_date %}
+                        <li class="list-group-item">{{film.release_date|date('d-m-Y')}}</li>
+                    {% endif %}
+                    <div class="progress">
+                        <div class="progress-bar bg-success" role="progressbar" style="width:{{film.vote_average*10}}%;" aria-valuenow="{{film.vote_average}}" aria-valuemin="0" aria-valuemax="10">{{film.vote_average}}</div>
+                    </div>
+                    <li class="list-group-item">{{film.popularity}}</li>
+                </ul> #}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+{% endblock %}

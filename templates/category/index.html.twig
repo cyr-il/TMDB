@@ -1,0 +1,38 @@
+{% extends 'layout/base.html.twig' %}
+
+{% block title %}Bienvenue sur votre site de films !{% endblock %}
+
+
+{% block body %}
+<div class="container">
+    <div class="row mt-3">
+        {% for list in categories %}
+                {% for category in list %}
+                <div class="col-md-2">
+                    <div class="card border-0">
+                        <div class="card-body category">
+                            <a href="{{ path('category_detail', {'id': category.id})}}" class="rotate-btn" style="text-decoration:none"><h5 class="card-title">{{ category.name }}</h5></a>
+                        </div>
+                    </div>   
+                </div>
+                {% endfor %}     
+        {% endfor %}
+    </div>
+</div>
+<div class="row row-cols-3 row-cols-md-3 mx-auto">
+    {% if categoriesDetail is defined %}
+        {% for film in categoriesDetail %}
+            {% if film.original_title is not null %}
+            <div class="card mb-3 border-0" style="width: 24rem;">
+                <img src="https://image.tmdb.org/t/p/w500{{film.poster_path}}" class="card-img-top" alt="{{film.original_title}}">
+                <div class="card-body">
+                    <a href="{{path('movie_detail', {'id': film.id})}}"><h5 class="card-title"><b>{{film.original_title}}</b></h5></a>
+                    <p class="card-text">{{film.overview|slice(0,100)}}</p>
+                    <p class="card-text"><small class="text-muted">{{film.release_date}}</small></p>
+                </div>
+            </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+</div>
+{% endblock %}
