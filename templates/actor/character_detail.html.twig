@@ -58,13 +58,9 @@
                 <p class="card-text mt-4">{{character.biography}}</p>
             </div>
         </div>
-        {# <div class="col-md-3">
-            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                {% for value in releaseDate %}
-                <rect x="{{ loop.index }}" y="0" width="20" height="{{ value }}" />
-                {% endfor %}
-            </svg>
-        </div> #}
+        <div class="col-md-3">
+            {{ render_chart(chart, {'id': 'my-chart'})}}
+        </div>
     </div>
 </div>
 

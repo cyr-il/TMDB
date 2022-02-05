@@ -34,7 +34,7 @@ class MoviesController extends AbstractController
         $movieDetail = $getMovie->getMovieDetail($id);
         $characters = $getMovie->getCharacter($id);
         $videos = $getMovie->getVideo($id);
-        return $this->render('home/movie_detail.html.twig', [
+        return $this->render('movies/movie_detail.html.twig', [
          'movieDetail' => $movieDetail,
          'characters'=> $characters,
          'videos' => $videos,
