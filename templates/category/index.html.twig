@@ -8,9 +8,9 @@
     <div class="row mt-3">
         {% for list in categories %}
                 {% for category in list %}
-                <div class="col-md-2">
+                <div class="col-md-2" >
                     <div class="card border-0">
-                        <div class="card-body category">
+                        <div class="card-body" id="catCard">
                             <a href="{{ path('category_detail', {'id': category.id})}}" class="rotate-btn" style="text-decoration:none"><h5 class="card-title">{{ category.name }}</h5></a>
                         </div>
                     </div>   

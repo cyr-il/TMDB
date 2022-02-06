@@ -9,7 +9,7 @@
         <div class="col-md-2 ml-5">
             <img class="" src="https://image.tmdb.org/t/p/w400{{character.profile_path}}" alt="{{character.name}}">
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3" id="movieDetail">
             <div class="card-body">
                 {% if character.deathday is not null %}
                 {% if character.gender == 2 %} 
@@ -58,7 +58,7 @@
                 <p class="card-text mt-4">{{character.biography}}</p>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-5" id="chart">
             {{ render_chart(chart, {'id': 'my-chart'})}}
         </div>
     </div>
