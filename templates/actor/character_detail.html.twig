@@ -9,7 +9,7 @@
         <div class="col-md-2 ml-5">
             <img class="" src="https://image.tmdb.org/t/p/w400{{character.profile_path}}" alt="{{character.name}}">
         </div>
-        <div class="col-md-3" id="movieDetail">
+        <div class="col-md-6" id="movieDetail">
             <div class="card-body">
                 {% if character.deathday is not null %}
                 {% if character.gender == 2 %} 
@@ -58,9 +58,6 @@
                 <p class="card-text mt-4">{{character.biography}}</p>
             </div>
         </div>
-        <div class="col-md-5" id="chart">
-            {{ render_chart(chart, {'id': 'my-chart'})}}
-        </div>
     </div>
 </div>
 
@@ -77,8 +74,7 @@
         <div class="card-body">
             <a href="{{path('movie_detail', {'id': characterMovie.id})}}"><h5 class="card-title">{{characterMovie.original_title}}</h5></a>
             <h5 class="card-title"><b>({{characterMovie.character}})</b></h5>
-            <p class="card-text">{{characterMovie.overview|slice(0,20)}}</p>
-            {# <p class="card-text"><small class="text-muted">{{characterMovie.release_date|date('d-m-Y')}}</small></p> #}
+            <p class="card-text"><small class="text-muted">{{characterMovie.release_date|date('d-m-Y')}}</small></p>
         </div>
     </div>
 {% endfor %}

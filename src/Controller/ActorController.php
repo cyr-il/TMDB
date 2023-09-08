@@ -7,8 +7,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
-use Symfony\UX\Chartjs\Model\Chart;
 
 class ActorController extends AbstractController
 {
@@ -16,7 +14,7 @@ class ActorController extends AbstractController
      * @Route("/character/{id}", name="character_detail")
      */
 
-    public function characterDetail($id, GetCharacterDetail $characterDetail, ChartBuilderInterface $chartBuilder): Response
+    public function characterDetail($id, GetCharacterDetail $characterDetail): Response
     {
         $character = $characterDetail->getCharacterDetail($id);
         $characterMovies = $characterDetail->getCharacterMovies($id);
@@ -24,46 +22,25 @@ class ActorController extends AbstractController
         $character['nbOfMovies'] = $nbOfMovies;
         $releaseDate = [];
 
-        foreach ($characterMovies as $movie) {
-
-            if(!array_key_exists('release_date', $movie)){
-                $movie['release_date'] = 0;
+        // Fonction de comparaison pour trier du plus récent au plus ancien
+        $compareFunction = function($a, $b) {
+            $dateA = new \DateTime($a['release_date']);
+            $dateB = new \DateTime($b['release_date']);
+            
+            if ($dateA == $dateB) {
+                return 0;
             }
-            else
-            {
-                $strToTime = strtotime($movie['release_date']);
-                $releaseDate[] = date('Y', $strToTime);
-                usort($releaseDate, array($this, "compareByTimeStamp"));
-            }
-        }
-        $data[] = array_count_values($releaseDate);
-        $chart = $chartBuilder->createChart(Chart::TYPE_BAR);
-        $chart->setData([
-            'labels' => array_keys($data[0]),
-            'datasets' => [
-                [
-                    'label' => 'Répartition des films par date de sortie',
-                    'backgroundColor' => 'rgb(255, 99, 132)',
-                    'borderColor' => 'rgb(255, 99, 132)',
-                    'data' => array_values($data[0]),
-                ],
-            ],
-        ]);
-         
-        $chart->setOptions([
-            'scales' => [
-                'y' => [
-                    'suggestedMin' => 0,
-                    'suggestedMax' => 10,
-                ],
-            ],
-        ]);
+            
+            return ($dateA > $dateB) ? -1 : 1;
+        };
+        
+        
+        usort($characterMovies, $compareFunction);
 
         return $this->render('actor/character_detail.html.twig', [
          'character' => $character,
          'characterMovies' => $characterMovies,
          'releaseDate' => $releaseDate,
-         'chart' => $chart,
          ]);
     }
 
@@ -79,13 +56,4 @@ class ActorController extends AbstractController
             ]);
         
     }
-
-    public function compareByTimeStamp($a, $b)
-    {
-        if ($a == $b) {
-            return 0;
-        }
-        return ($a < $b) ? -1 : 1;
-    }
-
 }

@@ -43,6 +43,8 @@ class GetCharacterDetail
         $characterMovie = $response->toArray();
         $characterMovies = ($characterMovie['cast']);
 
+        
+
         return $characterMovies;
     }
 
